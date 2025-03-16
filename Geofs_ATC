@@ -1,0 +1,32 @@
+radio.setFrequencyBand(120.75)
+radio.setGroup(120.75)
+basic.forever(() => {
+    let level = input.lightLevel()
+    radio.sendNumber(120.75)
+    radio.onReceivedNumber(function(receivedNumber: 120.75) {
+        if (true) {true 
+            game.pause(15); void {
+            
+        }
+        basic.pause(2500)
+        game.resume(5000)
+        
+        DisplayMode (Abovescreen) 
+        basic.pause(90000)
+        basic.showString("Please move via taxiway DD,N,B1,A12/A13")
+        
+        radio.sendMessage(DD,N,B1,A12/A13) 
+        radio.setFrequencyBand(120.75) 
+        game.resume() 
+        images.arrowImage(ArrowNames.North,Northeast,South,West,)
+        for (let i = 2; i < 7; i++) {Repeatcode5timesinput.lightLevel(2.6);input.soundLevel(15-20)
+            radio.receivedPacket(RadioPacketProperty.SignalStrength)
+        }images.iconImage(IconNames.MapofKORD(ORD))
+        let MapofKORD: number = (2)
+        if ((MapofKORD) = (true)); {{Shows_2_maps_of_KORD(ORD)}
+        radio.sendMessage(10-4);{true}
+        doSomething(Givegatenumber);{true}
+        function doSomething(Giveagatenumber) {ATC_gives_a_gate_number_for_aircraft};{(true)
+        input.onPinPressed(TouchPin.L2, function(Givetaxidirections) {
+            
+        })
