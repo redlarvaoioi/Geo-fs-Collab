@@ -64,7 +64,7 @@
         { code: 'KSFO', name: 'San Francisco International Airport' },
         { code: 'KLAX', name: 'Los Angeles International Airport' },
         { code: 'KJFK', name: 'John F. Kennedy International Airport' },
-        { code: 'KORD', name: 'Chicago O'Hare International Airport' },
+        { code: 'KORD', name: 'Chicago O' Hare International Airport' },
         { code: 'EGLL', name: 'London Heathrow Airport' },
         { code: 'KMIA', name: 'Miami International Airport' },
         { code: 'OMDB', name: 'Dubai International Airport' },
