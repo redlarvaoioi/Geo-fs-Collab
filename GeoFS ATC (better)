@@ -1,0 +1,208 @@
+// ==UserScript==
+// @name         GeoFS ATC
+// @namespace    http://tampermonkey.net/
+// @version      1.3
+// @description  Air Traffic Control (ATC) functionalities for any airport in GeoFS
+// @author       Popper412
+// @match        *://www.geo-fs.com/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // ATC Configuration
+    let atcCallsign = "Air Traffic Controller";
+    const atcFrequency = "118.85"; // Example frequency for ATC
+
+    // Create a simple UI for changing the callsign
+    const callsignInput = document.createElement('input');
+    callsignInput.type = 'text';
+    callsignInput.value = atcCallsign;
+    callsignInput.placeholder = 'Enter ATC Callsign';
+    document.body.appendChild(callsignInput);
+
+    const updateButton = document.createElement('button');
+    updateButton.textContent = 'Update Callsign';
+    document.body.appendChild(updateButton);
+
+    updateButton.addEventListener('click', () => {
+        atcCallsign = callsignInput.value;
+        console.log(`ATC Callsign updated to: ${atcCallsign}`);
+    });
+
+    // Create a button to access the ATC panel
+    const atcButton = document.createElement('button');
+    atcButton.textContent = 'Open ATC Panel';
+    document.body.appendChild(atcButton);
+
+    // Create the ATC panel
+    const atcPanel = document.createElement('div');
+    atcPanel.style.position = 'fixed';
+    atcPanel.style.top = '50px';
+    atcPanel.style.left = '50%';
+    atcPanel.style.transform = 'translateX(-50%)';
+    atcPanel.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    atcPanel.style.color = 'Black';
+    atcPanel.style.padding = '10px';
+    atcPanel.style.display = 'none';
+    atcPanel.style.zIndex = '9999';
+    document.body.appendChild(atcPanel);
+
+    // Add options to the ATC panel
+    const requestTakeoffButton = document.createElement('button');
+    requestTakeoffButton.textContent = 'Request Takeoff';
+    atcPanel.appendChild(requestTakeoffButton);
+
+    const requestLandingButton = document.createElement('button');
+    requestLandingButton.textContent = 'Request Landing';
+    atcPanel.appendChild(requestLandingButton);
+
+    // Add a dropdown for selecting the destination airport
+    const destinationSelect = document.createElement('select');
+    const airports = [
+        { code: 'KSFO', name: 'San Francisco International Airport' },
+        { code: 'KLAX', name: 'Los Angeles International Airport' },
+        { code: 'KJFK', name: 'John F. Kennedy International Airport' },
+        { code: 'KORD', name: 'Chicago O'Hare International Airport' },
+        { code: 'EGLL', name: 'London Heathrow Airport' },
+        { code: 'KMIA', name: 'Miami International Airport' },
+        { code: 'OMDB', name: 'Dubai International Airport' },
+        { code: 'KMCK', name: 'Mc Cook Ben Nelson Regional Airport' },
+        { code: 'KDIK', name: 'Dickinson Theodore Roosevelt Regional Airport' },
+        { code: 'KSLC', name: 'Salt Lake City International Airport' },
+        { code: 'CYFS', name: 'Fort Simpson Airport' },
+        { code: 'PAGA', name: 'Edward G. Pitka Sr Airport' },
+        { code: 'UENW', name: 'Vilyuisk Airport' },
+        { code: 'UOTT', name: 'Turukhansk' },
+        { code: 'LFPO', name: 'Paris-Orly Airport' },
+        { code: 'LFPB', name: 'Paris-Le Bourget Airport' },
+        { code: 'LFPG', name: 'Charles de Gaulle International Airport' },
+        { code: 'LIMJ', name: 'Genoa Cristoforo Colombo Airport' },
+        { code: 'EIDW', name: 'Dublin Airport' },
+        { code: 'SBGL', name: 'Tom Jobim International Airport' },
+        { code: 'KABE', name: 'Lehigh Valley International Airport' },
+// Add more airports as needed
+    ];
+    airports.forEach(airport => {
+        const option = document.createElement('option');
+        option.value = airport.code;
+        option.textContent = airport.name;
+        destinationSelect.appendChild(option);
+    });
+    atcPanel.appendChild(destinationSelect);
+
+    const getInstructionsButton = document.createElement('button');
+    getInstructionsButton.textContent = 'Get Flight Instructions';
+    atcPanel.appendChild(getInstructionsButton);
+
+    // Function to show messages at the top of the screen
+    function showMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = message;
+        messageDiv.style.position = 'fixed';
+        messageDiv.style.top = '10px';
+        messageDiv.style.left = '50%';
+        messageDiv.style.transform = 'translateX(-50%)';
+        messageDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        messageDiv.style.color = 'white';
+        messageDiv.style.padding = '10px';
+        messageDiv.style.zIndex = '9999';
+        document.body.appendChild(messageDiv);
+
+        setTimeout(() => {
+            document.body.removeChild(messageDiv);
+        }, 5000); // Message will disappear after 5 seconds
+    }
+
+    // Initialize ATC
+    function initializeATC() {
+        console.log(`${atcCallsign} initialized on frequency ${atcFrequency}`);
+        showMessage(`${atcCallsign} initialized on frequency ${atcFrequency}`);
+        // Additional initialization logic can be added here
+    }
+
+    // Communication Interface
+    function handleCommunication(message) {
+        console.log(`Message from pilot: ${message}`);
+        showMessage(`Message from pilot: ${message}`);
+        // Logic to handle communication between ATC and pilots
+    }
+
+    // Aircraft Management
+    function manageAircraft(aircraft) {
+        console.log(`Managing aircraft: ${aircraft.callsign}`);
+        showMessage(`Managing aircraft: ${aircraft.callsign}`);
+        // Logic to monitor and manage aircraft positions and statuses
+    }
+
+    // Flight Instructions
+    function provideFlightInstructions(aircraft, instructions) {
+        console.log(`Providing instructions to ${aircraft.callsign}: ${instructions}`);
+        showMessage(`Providing instructions to ${aircraft.callsign}: ${instructions}`);
+        // Logic to provide takeoff, landing, and taxiing instructions
+    }
+
+    // Conflict Detection
+    function detectConflicts(aircraftList) {
+        console.log("Detecting conflicts...");
+        showMessage("Detecting conflicts...");
+        // Logic to detect and resolve potential conflicts between aircraft
+    }
+
+    // Weather Information
+    function provideWeatherUpdates() {
+        console.log("Providing weather updates...");
+        showMessage("Providing weather updates...");
+        // Logic to provide weather information and advisories
+    }
+
+    // Emergency Handling
+    function handleEmergencies(aircraft) {
+        console.log(`Handling emergency for ${aircraft.callsign}`);
+        showMessage(`Handling emergency for ${aircraft.callsign}`);
+        // Logic to manage emergency situations and prioritize aircraft
+    }
+
+    // Event listeners for ATC panel buttons
+    requestTakeoffButton.addEventListener('click', () => {
+        const message = "Requesting takeoff clearance";
+        handleCommunication(message);
+        // Provide specific flight instructions for takeoff
+        provideFlightInstructions({ callsign: "AA192" }, " You are cleared for takeoff");
+    });
+
+    requestLandingButton.addEventListener('click', () => {
+        const message = "Requesting landing clearance";
+        handleCommunication(message);
+        // Provide specific flight instructions for landing
+        provideFlightInstructions({ callsign: "AA192" }, "Cleared for landing");
+    });
+
+    getInstructionsButton.addEventListener('click', () => {
+        const destination = destinationSelect.value;
+        const message = ` Tower, AA192 Requesting flight instructions to ${destination}`;
+        handleCommunication(message);
+        // Provide flight instructions to the selected destination
+        provideFlightInstructions({ callsign: "AA192" }, `Fly heading 250 to ${destination}`);
+    });
+
+    // Show/hide the ATC panel
+    atcButton.addEventListener('click', () => {
+        if (atcPanel.style.display === 'none') {
+            atcPanel.style.display = 'block';
+        } else {
+            atcPanel.style.display = 'none';
+        }
+    });
+
+    // Example usage
+    initializeATC();
+    handleCommunication("Requesting takeoff clearance ATC");
+    manageAircraft({ callsign: "AA192" });
+    provideFlightInstructions({ callsign: "N12345" }, "Cleared for takeoff");
+    detectConflicts([{ callsign: "N12345" }, { callsign: "N54321" }]);
+    provideWeatherUpdates();
+    handleEmergencies({ callsign: "N12345" });
+
+})();
