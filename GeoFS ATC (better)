@@ -165,11 +165,18 @@
     }
 
     // Event listeners for ATC panel buttons
+    requestTaxiButton.addEventListener('click',() => {
+        const message = "Requesting taxi directions"; 
+        handleCommunication (message) ; 
+        //Provide specific flight instructions for taxi
+        provideTaxiDirections({callisgn: "AA192"}, "Please taxi via A19, B, EE N, DD, K, K3, T8, T, H, Z and please hold via runway 09R")
+    })
+   
     requestTakeoffButton.addEventListener('click', () => {
-        const message = "Requesting takeoff clearance";
+        const message = "Requesting takeoff clearance tower";
         handleCommunication(message);
         // Provide specific flight instructions for takeoff
-        provideFlightInstructions({ callsign: "AA192" }, " You are cleared for takeoff");
+        provideFlightInstructions({ callsign: "AA192" }, " You are cleared for takeoff via runway 09R AA192. Have a nice flight");
     });
 
     requestLandingButton.addEventListener('click', () => {
@@ -179,6 +186,13 @@
         provideFlightInstructions({ callsign: "AA192" }, "Cleared for landing");
     });
 
+    requestTaxiButton.addEventListener('click',() => {
+        const message = "Requesting taxi directions to gate tower." 
+        handleCommunication(message); 
+        //Provide specific instructions for taxiing
+        provideTaxiDirections({callsign: "AA192"}, "Affirmative. Please taxi via taxiway TT, B, A20/A19 please")
+        
+    })
     getInstructionsButton.addEventListener('click', () => {
         const destination = destinationSelect.value;
         const message = ` Tower, AA192 Requesting flight instructions to ${destination}`;
@@ -200,9 +214,9 @@
     initializeATC();
     handleCommunication("Requesting takeoff clearance ATC");
     manageAircraft({ callsign: "AA192" });
-    provideFlightInstructions({ callsign: "N12345" }, "Cleared for takeoff");
-    detectConflicts([{ callsign: "N12345" }, { callsign: "N54321" }]);
+    provideFlightInstructions({ callsign: "AA192" }, "Cleared for takeoff");
+    detectConflicts([{ callsign: "AA192" }, { callsign: "AA192" }]);
     provideWeatherUpdates();
-    handleEmergencies({ callsign: "N12345" });
+    handleEmergencies({ callsign: "AA192" });
 
 })();
