@@ -2,7 +2,7 @@
 // @name          Working Missiles for GeoFS
 // @namespace    http://tampermonkey.net/
 // @version      1.3
-// @description  Air Traffic Control (ATC) functionalities for any airport in GeoFS
+// @description  Working Missiles for Military Planes in GeoFS
 // @author       Popper412
 // @match        *://www.geo-fs.com/*
 // @grant        none
