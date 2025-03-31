@@ -7,3 +7,1040 @@
 // @match        *://www.geo-fs.com/*
 // @grant        none
 // ==/UserScript==
+// Define the FA-18F Super Hornet's weapons
+const FA18FSuperHornetWeapons = {
+    missiles: {
+        AIM120_AMRAAM: {
+            name: "AIM-120 AMRAAM",
+            type: "Air-to-Air",
+            quantity: 5,
+            range: "Medium",
+            guidance: "Radar"
+        },
+        AIM9X_Sidewinder: {
+            name: "AIM-9X Sidewinder",
+            type: "Air-to-Air",
+            quantity: 5,
+            range: "Short",
+            guidance: "Infrared"
+        },
+        AIM174B: {
+            name: "AIM-174B",
+            type: "Air-to-Air",
+            quantity: 2,
+            range: "Very Long",
+            guidance: "Advanced Radar"
+        },
+        AGM65_Maverick: {
+            name: "AGM-65 Maverick",
+            type: "Air-to-Ground",
+            quantity: 4,
+            guidance: "Laser"
+        },
+        Harpoon: {
+            name: "Harpoon",
+            type: "Anti-Ship",
+            quantity: 2,
+            guidance: "Radar"
+        },
+        JDAM: {
+            name: "Joint Direct Attack Munition (JDAM)",
+            type: "Precision-Guided Bomb",
+            quantity: 4,
+            guidance: "GPS"
+        },
+        LaserGuidedBombs: {
+            name: "Laser Guided Bombs",
+            type: "Air-to-Ground",
+            quantity: 4,
+            guidance: "Laser"
+        },
+        AGM154_JSOW: {
+            name: "AGM-154 Joint Stand-Off Weapon (JSOW)",
+            type: "Air-to-Ground",
+            quantity: 2,
+            guidance: "GPS"
+        }
+    },
+    gunSystem: {
+        M61A2: {
+            name: "M61A2 20mm Nose-Mounted Gun System",
+            type: "Cannon",
+            ammo: 578,
+            rateOfFire: "6000 rounds/min"
+        }
+    }
+};
+
+// Example function to display the weapons for the FA-18F Super Hornet
+function displayWeapons(aircraftWeapons) {
+    console.log("Weapons for FA-18F Super Hornet:");
+    for (const [key, weapon] of Object.entries(aircraftWeapons.missiles)) {
+        console.log(`${weapon.name} - Type: ${weapon.type}, Quantity: ${weapon.quantity}, Guidance: ${weapon.guidance}`);
+    }
+    console.log(`${aircraftWeapons.gunSystem.M61A2.name} - Ammo: ${aircraftWeapons.gunSystem.M61A2.ammo}, Rate of Fire: ${aircraftWeapons.gunSystem.M61A2.rateOfFire}`);
+}
+
+// Call the function to display the weapons
+displayWeapons(FA18FSuperHornetWeapons);
+// Function to launch a missile
+function launchMissile(aircraftWeapons, missileKey) {
+    const missile = aircraftWeapons.missiles[missileKey];
+    if (!missile) {
+        console.log(`Missile type "${missileKey}" not found.`);
+        return;
+    }
+
+    if (missile.quantity > 0) {
+        missile.quantity--;
+        console.log(`Launched ${missile.name}! Remaining: ${missile.quantity}`);
+    } else {
+        console.log(`No ${missile.name} missiles remaining!`);
+    }
+}
+
+// Example usage: Launching missiles
+launchMissile(FA18FSuperHornetWeapons, "AIM120_AMRAAM"); // Launch AIM-120 AMRAAM
+launchMissile(FA18FSuperHornetWeapons, "AGM65_Maverick"); // Launch AGM-65 Maverick
+launchMissile(FA18FSuperHornetWeapons, "AIM174B"); // Launch AIM-174B
+// Function to create a launch button for each weapon
+function createLaunchButtons(aircraftWeapons) {
+    // Create a container for the buttons
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.position = "absolute";
+    buttonContainer.style.top = "10px";
+    buttonContainer.style.right = "10px";
+    buttonContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+    buttonContainer.style.padding = "10px";
+    buttonContainer.style.borderRadius = "5px";
+    buttonContainer.style.color = "white";
+    buttonContainer.style.zIndex = "1000";
+
+    // Add a title
+    const title = document.createElement("h3");
+    title.textContent = "FA-18F Weapons";
+    title.style.margin = "0 0 10px 0";
+    title.style.textAlign = "center";
+    buttonContainer.appendChild(title);
+
+    // Create buttons for each missile
+    for (const [key, weapon] of Object.entries(aircraftWeapons.missiles)) {
+        const button = document.createElement("button");
+        button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+        button.style.display = "block";
+        button.style.margin = "5px 0";
+        button.style.width = "100%";
+        button.style.cursor = "pointer";
+
+        // Add click event to launch the missile
+        button.addEventListener("click", () => {
+            if (weapon.quantity > 0) {
+                launchMissile(aircraftWeapons, key);
+                button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+            } else {
+                alert(`No ${weapon.name} missiles remaining!`);
+            }
+        });
+
+        buttonContainer.appendChild(button);
+    }
+
+    // Create a button for the gun system
+    const gunButton = document.createElement("button");
+    gunButton.textContent = `Fire ${aircraftWeapons.gunSystem.M61A2.name} (${aircraftWeapons.gunSystem.M61A2.ammo} rounds left)`;
+    gunButton.style.display = "block";
+    gunButton.style.margin = "5px 0";
+    gunButton.style.width = "100%";
+    gunButton.style.cursor = "pointer";
+
+    // Add click event to fire the gun system
+    gunButton.addEventListener("click", () => {
+        const gun = aircraftWeapons.gunSystem.M61A2;
+        if (gun.ammo > 0) {
+            gun.ammo -= 10; // Decrease ammo by 10 per click
+            console.log(`Fired ${gun.name}! Remaining ammo: ${gun.ammo}`);
+            gunButton.textContent = `Fire ${gun.name} (${gun.ammo} rounds left)`;
+        } else {
+            alert(`No ammo remaining for ${gun.name}!`);
+        }
+    });
+
+    buttonContainer.appendChild(gunButton);
+
+    // Add the button container to the document body
+    document.body.appendChild(buttonContainer);
+}
+
+// Call the function to create launch buttons
+createLaunchButtons(FA18FSuperHornetWeapons);
+// Define the F-16 Fighting Falcon's weapons
+const F16Weapons = {
+    missiles: {
+        AIM120_AMRAAM: {
+            name: "AIM-120 AMRAAM",
+            type: "Air-to-Air",
+            quantity: 4,
+            range: "Medium",
+            guidance: "Radar"
+        },
+        AIM9X_Sidewinder: {
+            name: "AIM-9X Sidewinder",
+            type: "Air-to-Air",
+            quantity: 4,
+            range: "Short",
+            guidance: "Infrared"
+        },
+        AIM9M_Sidewinder: {
+            name: "AIM-9M Sidewinder",
+            type: "Air-to-Air",
+            quantity: 4,
+            range: "Short",
+            guidance: "Infrared"
+        },
+        AIM7_Sparrow: {
+            name: "AIM-7 Sparrow",
+            type: "Air-to-Air",
+            quantity: 4,
+            range: "Medium",
+            guidance: "Semi-Active Radar"
+        }
+    },
+    gunSystem: {
+        M61A1: {
+            name: "M61A1 20mm Vulcan Cannon",
+            type: "Cannon",
+            ammo: 511,
+            rateOfFire: "6000 rounds/min"
+        }
+    }
+};
+
+// Function to launch a missile
+function launchMissile(aircraftWeapons, missileKey) {
+    const missile = aircraftWeapons.missiles[missileKey];
+    if (!missile) {
+        console.log(`Missile type "${missileKey}" not found.`);
+        return;
+    }
+
+    if (missile.quantity > 0) {
+        missile.quantity--;
+        console.log(`Launched ${missile.name}! Remaining: ${missile.quantity}`);
+    } else {
+        console.log(`No ${missile.name} missiles remaining!`);
+    }
+}
+
+// Function to fire the cannon
+function fireCannon(aircraftWeapons) {
+    const gun = aircraftWeapons.gunSystem.M61A1;
+    if (gun.ammo > 0) {
+        gun.ammo -= 10; // Decrease ammo by 10 per shot
+        console.log(`Fired ${gun.name}! Remaining ammo: ${gun.ammo}`);
+    } else {
+        console.log(`No ammo remaining for ${gun.name}!`);
+    }
+}
+
+// Function to create launch buttons for the F-16
+function createF16LaunchButtons(aircraftWeapons) {
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.position = "absolute";
+    buttonContainer.style.top = "150px"; // Adjusted position for F-16
+    buttonContainer.style.right = "10px";
+    buttonContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+    buttonContainer.style.padding = "10px";
+    buttonContainer.style.borderRadius = "5px";
+    buttonContainer.style.color = "white";
+    buttonContainer.style.zIndex = "1000";
+
+    const title = document.createElement("h3");
+    title.textContent = "F-16 Weapons";
+    title.style.margin = "0 0 10px 0";
+    title.style.textAlign = "center";
+    buttonContainer.appendChild(title);
+
+    // Create buttons for each missile
+    for (const [key, weapon] of Object.entries(aircraftWeapons.missiles)) {
+        const button = document.createElement("button");
+        button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+        button.style.display = "block";
+        button.style.margin = "5px 0";
+        button.style.width = "100%";
+        button.style.cursor = "pointer";
+
+        // Add click event to launch the missile
+        button.addEventListener("click", () => {
+            if (weapon.quantity > 0) {
+                launchMissile(aircraftWeapons, key);
+                button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+            } else {
+                alert(`No ${weapon.name} missiles remaining!`);
+            }
+        });
+
+        buttonContainer.appendChild(button);
+    }
+
+    // Create a button for the gun system
+    const gunButton = document.createElement("button");
+    gunButton.textContent = `Fire ${aircraftWeapons.gunSystem.M61A1.name} (${aircraftWeapons.gunSystem.M61A1.ammo} rounds left)`;
+    gunButton.style.display = "block";
+    gunButton.style.margin = "5px 0";
+    gunButton.style.width = "100%";
+    gunButton.style.cursor = "pointer";
+
+    // Add click event to fire the gun system
+    gunButton.addEventListener("click", () => {
+        const gun = aircraftWeapons.gunSystem.M61A1;
+        if (gun.ammo > 0) {
+            gun.ammo -= 10; // Decrease ammo by 10 per click
+            console.log(`Fired ${gun.name}! Remaining ammo: ${gun.ammo}`);
+            gunButton.textContent = `Fire ${gun.name} (${gun.ammo} rounds left)`;
+        } else {
+            alert(`No ammo remaining for ${gun.name}!`);
+        }
+    });
+
+    buttonContainer.appendChild(gunButton);
+
+    // Add the button container to the document body
+    document.body.appendChild(buttonContainer);
+}
+
+// Call the function to create launch buttons for the F-16
+createF16LaunchButtons(F16Weapons);
+// Define the F-22 Raptor's weapons
+const F22Weapons = {
+    missiles: {
+        AIM9_Sidewinder: {
+            name: "AIM-9 Sidewinder",
+            type: "Air-to-Air",
+            quantity: 2,
+            range: "Short",
+            guidance: "Infrared"
+        },
+        AIM120_AMRAAM: {
+            name: "AIM-120 AMRAAM",
+            type: "Air-to-Air",
+            quantity: 6,
+            range: "Medium",
+            guidance: "Radar"
+        }
+    },
+    bombs: {
+        GBU32_JDAM: {
+            name: "GBU-32 JDAM",
+            type: "Air-to-Ground",
+            quantity: 2,
+            weight: "1,000 pounds",
+            guidance: "GPS"
+        },
+        SmallDiameterBomb: {
+            name: "Small Diameter Bomb",
+            type: "Air-to-Ground",
+            quantity: 8,
+            weight: "250 pounds",
+            guidance: "GPS"
+        }
+    },
+    gunSystem: {
+        M61A2: {
+            name: "M61A2 20mm Cannon",
+            type: "Cannon",
+            ammo: 480,
+            rateOfFire: "6000 rounds/min"
+        }
+    }
+};
+
+// Function to launch a missile or drop a bomb
+function launchWeapon(aircraftWeapons, weaponKey, weaponType) {
+    const weapon = aircraftWeapons[weaponType][weaponKey];
+    if (!weapon) {
+        console.log(`Weapon type "${weaponKey}" not found.`);
+        return;
+    }
+
+    if (weapon.quantity > 0) {
+        weapon.quantity--;
+        console.log(`Launched ${weapon.name}! Remaining: ${weapon.quantity}`);
+    } else {
+        console.log(`No ${weapon.name} remaining!`);
+    }
+}
+
+// Function to fire the cannon
+function fireCannon(aircraftWeapons) {
+    const gun = aircraftWeapons.gunSystem.M61A2;
+    if (gun.ammo > 0) {
+        gun.ammo -= 10; // Decrease ammo by 10 per shot
+        console.log(`Fired ${gun.name}! Remaining ammo: ${gun.ammo}`);
+    } else {
+        console.log(`No ammo remaining for ${gun.name}!`);
+    }
+}
+
+// Function to create launch buttons for the F-22
+function createF22LaunchButtons(aircraftWeapons) {
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.position = "absolute";
+    buttonContainer.style.top = "300px"; // Adjusted position for F-22
+    buttonContainer.style.right = "10px";
+    buttonContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+    buttonContainer.style.padding = "10px";
+    buttonContainer.style.borderRadius = "5px";
+    buttonContainer.style.color = "white";
+    buttonContainer.style.zIndex = "1000";
+
+    const title = document.createElement("h3");
+    title.textContent = "F-22 Weapons";
+    title.style.margin = "0 0 10px 0";
+    title.style.textAlign = "center";
+    buttonContainer.appendChild(title);
+
+    // Create buttons for each missile
+    for (const [key, weapon] of Object.entries(aircraftWeapons.missiles)) {
+        const button = document.createElement("button");
+        button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+        button.style.display = "block";
+        button.style.margin = "5px 0";
+        button.style.width = "100%";
+        button.style.cursor = "pointer";
+
+        // Add click event to launch the missile
+        button.addEventListener("click", () => {
+            if (weapon.quantity > 0) {
+                launchWeapon(aircraftWeapons, key, "missiles");
+                button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+            } else {
+                alert(`No ${weapon.name} missiles remaining!`);
+            }
+        });
+
+        buttonContainer.appendChild(button);
+    }
+
+    // Create buttons for each bomb
+    for (const [key, weapon] of Object.entries(aircraftWeapons.bombs)) {
+        const button = document.createElement("button");
+        button.textContent = `Drop ${weapon.name} (${weapon.quantity} left)`;
+        button.style.display = "block";
+        button.style.margin = "5px 0";
+        button.style.width = "100%";
+        button.style.cursor = "pointer";
+
+        // Add click event to drop the bomb
+        button.addEventListener("click", () => {
+            if (weapon.quantity > 0) {
+                launchWeapon(aircraftWeapons, key, "bombs");
+                button.textContent = `Drop ${weapon.name} (${weapon.quantity} left)`;
+            } else {
+                alert(`No ${weapon.name} bombs remaining!`);
+            }
+        });
+
+        buttonContainer.appendChild(button);
+    }
+
+    // Create a button for the gun system
+    const gunButton = document.createElement("button");
+    gunButton.textContent = `Fire ${aircraftWeapons.gunSystem.M61A2.name} (${aircraftWeapons.gunSystem.M61A2.ammo} rounds left)`;
+    gunButton.style.display = "block";
+    gunButton.style.margin = "5px 0";
+    gunButton.style.width = "100%";
+    gunButton.style.cursor = "pointer";
+
+    // Add click event to fire the gun system
+    gunButton.addEventListener("click", () => {
+        const gun = aircraftWeapons.gunSystem.M61A2;
+        if (gun.ammo > 0) {
+            gun.ammo -= 10; // Decrease ammo by 10 per click
+            console.log(`Fired ${gun.name}! Remaining ammo: ${gun.ammo}`);
+            gunButton.textContent = `Fire ${gun.name} (${gun.ammo} rounds left)`;
+        } else {
+            alert(`No ammo remaining for ${gun.name}!`);
+        }
+    });
+
+    buttonContainer.appendChild(gunButton);
+
+    // Add the button container to the document body
+    document.body.appendChild(buttonContainer);
+}
+
+// Call the function to create launch buttons for the F-22
+createF22LaunchButtons(F22Weapons);
+// Define the F-35B Lightning II's weapons
+const F35BWeapons = {
+    missiles: {
+        AIM120_AMRAAM: {
+            name: "AIM-120 AMRAAM",
+            type: "Air-to-Air",
+            quantity: 4,
+            range: "Medium",
+            guidance: "Radar"
+        },
+        AIM9X_BlockII: {
+            name: "AIM-9X Block II",
+            type: "Air-to-Air",
+            quantity: 4,
+            range: "Short",
+            guidance: "Infrared"
+        },
+        Meteor: {
+            name: "Meteor",
+            type: "Air-to-Air",
+            quantity: 2,
+            range: "Very Long",
+            guidance: "Radar"
+        },
+        JASSM: {
+            name: "Joint Air-to-Surface Standoff Missile (JASSM)",
+            type: "Air-to-Ground",
+            quantity: 2,
+            range: "Long",
+            guidance: "GPS"
+        },
+        LRASM: {
+            name: "Long Range Anti-Ship Missile (LRASM)",
+            type: "Anti-Ship",
+            quantity: 2,
+            range: "Very Long",
+            guidance: "Radar"
+        }
+    },
+    gunSystem: {
+        GAU22A: {
+            name: "GAU-22/A 25mm Cannon",
+            type: "Cannon",
+            ammo: 220,
+            rateOfFire: "3300 rounds/min"
+        }
+    }
+};
+
+// Function to launch a missile
+function launchMissile(aircraftWeapons, missileKey) {
+    const missile = aircraftWeapons.missiles[missileKey];
+    if (!missile) {
+        console.log(`Missile type "${missileKey}" not found.`);
+        return;
+    }
+
+    if (missile.quantity > 0) {
+        missile.quantity--;
+        console.log(`Launched ${missile.name}! Remaining: ${missile.quantity}`);
+    } else {
+        console.log(`No ${missile.name} missiles remaining!`);
+    }
+}
+
+// Function to fire the cannon
+function fireCannon(aircraftWeapons) {
+    const gun = aircraftWeapons.gunSystem.GAU22A;
+    if (gun.ammo > 0) {
+        gun.ammo -= 10; // Decrease ammo by 10 per shot
+        console.log(`Fired ${gun.name}! Remaining ammo: ${gun.ammo}`);
+    } else {
+        console.log(`No ammo remaining for ${gun.name}!`);
+    }
+}
+
+// Function to create launch buttons for the F-35B
+function createF35BLaunchButtons(aircraftWeapons) {
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.position = "absolute";
+    buttonContainer.style.top = "450px"; // Adjusted position for F-35B
+    buttonContainer.style.right = "10px";
+    buttonContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+    buttonContainer.style.padding = "10px";
+    buttonContainer.style.borderRadius = "5px";
+    buttonContainer.style.color = "white";
+    buttonContainer.style.zIndex = "1000";
+
+    const title = document.createElement("h3");
+    title.textContent = "F-35B Weapons";
+    title.style.margin = "0 0 10px 0";
+    title.style.textAlign = "center";
+    buttonContainer.appendChild(title);
+
+    // Create buttons for each missile
+    for (const [key, weapon] of Object.entries(aircraftWeapons.missiles)) {
+        const button = document.createElement("button");
+        button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+        button.style.display = "block";
+        button.style.margin = "5px 0";
+        button.style.width = "100%";
+        button.style.cursor = "pointer";
+
+        // Add click event to launch the missile
+        button.addEventListener("click", () => {
+            if (weapon.quantity > 0) {
+                launchMissile(aircraftWeapons, key);
+                button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+            } else {
+                alert(`No ${weapon.name} missiles remaining!`);
+            }
+        });
+
+        buttonContainer.appendChild(button);
+    }
+
+    // Create a button for the gun system
+    const gunButton = document.createElement("button");
+    gunButton.textContent = `Fire ${aircraftWeapons.gunSystem.GAU22A.name} (${aircraftWeapons.gunSystem.GAU22A.ammo} rounds left)`;
+    gunButton.style.display = "block";
+    gunButton.style.margin = "5px 0";
+    gunButton.style.width = "100%";
+    gunButton.style.cursor = "pointer";
+
+    // Add click event to fire the gun system
+    gunButton.addEventListener("click", () => {
+        const gun = aircraftWeapons.gunSystem.GAU22A;
+        if (gun.ammo > 0) {
+            gun.ammo -= 10; // Decrease ammo by 10 per click
+            console.log(`Fired ${gun.name}! Remaining ammo: ${gun.ammo}`);
+            gunButton.textContent = `Fire ${gun.name} (${gun.ammo} rounds left)`;
+        } else {
+            alert(`No ammo remaining for ${gun.name}!`);
+        }
+    });
+
+    buttonContainer.appendChild(gunButton);
+
+    // Add the button container to the document body
+    document.body.appendChild(buttonContainer);
+}
+
+// Call the function to create launch buttons for the F-35B
+createF35BLaunchButtons(F35BWeapons);
+// Define the F-15 Eagle's weapons
+const F15Weapons = {
+    missiles: {
+        AIM9_Sidewinder: {
+            name: "AIM-9L/M Sidewinder",
+            type: "Air-to-Air",
+            quantity: 4,
+            range: "Short",
+            guidance: "Infrared"
+        },
+        AIM7_Sparrow: {
+            name: "AIM-7F/M Sparrow",
+            type: "Air-to-Air",
+            quantity: 4,
+            range: "Medium",
+            guidance: "Semi-Active Radar"
+        },
+        AIM120_AMRAAM: {
+            name: "AIM-120 AMRAAM",
+            type: "Air-to-Air",
+            quantity: 8,
+            range: "Medium",
+            guidance: "Radar"
+        }
+    },
+    gunSystem: {
+        M61A1: {
+            name: "M-61A1 20mm Cannon",
+            type: "Cannon",
+            ammo: 940,
+            rateOfFire: "6000 rounds/min"
+        }
+    }
+};
+
+// Define the F-14 Tomcat's weapons
+const F14Weapons = {
+    missiles: {
+        AIM54_Phoenix: {
+            name: "AIM-54 Phoenix",
+            type: "Air-to-Air",
+            quantity: 6,
+            range: "Long",
+            guidance: "Radar"
+        },
+        AIM7_Sparrow: {
+            name: "AIM-7 Sparrow",
+            type: "Air-to-Air",
+            quantity: 4,
+            range: "Medium",
+            guidance: "Semi-Active Radar"
+        },
+        AIM9_Sidewinder: {
+            name: "AIM-9 Sidewinder",
+            type: "Air-to-Air",
+            quantity: 4,
+            range: "Short",
+            guidance: "Infrared"
+        }
+    },
+    gunSystem: {
+        M61A1: {
+            name: "M-61A1 20mm Cannon",
+            type: "Cannon",
+            ammo: 675,
+            rateOfFire: "6000 rounds/min"
+        }
+    }
+};
+
+// Define the SU-35's weapons
+const SU35Weapons = {
+    missiles: {
+        R77: {
+            name: "R-77",
+            type: "Air-to-Air",
+            quantity: 6,
+            range: "Medium",
+            guidance: "Radar"
+        },
+        R73E: {
+            name: "R-73E",
+            type: "Air-to-Air",
+            quantity: 4,
+            range: "Short",
+            guidance: "Infrared"
+        },
+        R37M: {
+            name: "R-37M",
+            type: "Air-to-Air",
+            quantity: 2,
+            range: "Long",
+            guidance: "Radar"
+        },
+        Kh31: {
+            name: "Kh-31",
+            type: "Anti-Ship",
+            quantity: 2,
+            range: "Long",
+            guidance: "Radar"
+        },
+        Kh29: {
+            name: "Kh-29",
+            type: "Air-to-Surface",
+            quantity: 2,
+            range: "Short",
+            guidance: "Laser"
+        }
+    },
+    gunSystem: {
+        GSh301: {
+            name: "GSh-30-1 30mm Cannon",
+            type: "Cannon",
+            ammo: 150,
+            rateOfFire: "1500 rounds/min"
+        }
+    }
+};
+
+// Function to launch a missile
+function launchMissile(aircraftWeapons, missileKey) {
+    const missile = aircraftWeapons.missiles[missileKey];
+    if (!missile) {
+        console.log(`Missile type "${missileKey}" not found.`);
+        return;
+    }
+
+    if (missile.quantity > 0) {
+        missile.quantity--;
+        console.log(`Launched ${missile.name}! Remaining: ${missile.quantity}`);
+    } else {
+        console.log(`No ${missile.name} missiles remaining!`);
+    }
+}
+
+// Function to fire the cannon
+function fireCannon(aircraftWeapons) {
+    const gun = aircraftWeapons.gunSystem[Object.keys(aircraftWeapons.gunSystem)[0]];
+    if (gun.ammo > 0) {
+        gun.ammo -= 10; // Decrease ammo by 10 per shot
+        console.log(`Fired ${gun.name}! Remaining ammo: ${gun.ammo}`);
+    } else {
+        console.log(`No ammo remaining for ${gun.name}!`);
+    }
+}
+
+// Function to create launch buttons for any aircraft
+function createLaunchButtons(aircraftWeapons, aircraftName, topPosition) {
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.position = "absolute";
+    buttonContainer.style.top = `${topPosition}px`; // Adjusted position for each aircraft
+    buttonContainer.style.right = "10px";
+    buttonContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+    buttonContainer.style.padding = "10px";
+    buttonContainer.style.borderRadius = "5px";
+    buttonContainer.style.color = "white";
+    buttonContainer.style.zIndex = "1000";
+
+    const title = document.createElement("h3");
+    title.textContent = `${aircraftName} Weapons`;
+    title.style.margin = "0 0 10px 0";
+    title.style.textAlign = "center";
+    buttonContainer.appendChild(title);
+
+    // Create buttons for each missile
+    for (const [key, weapon] of Object.entries(aircraftWeapons.missiles)) {
+        const button = document.createElement("button");
+        button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+        button.style.display = "block";
+        button.style.margin = "5px 0";
+        button.style.width = "100%";
+        button.style.cursor = "pointer";
+
+        // Add click event to launch the missile
+        button.addEventListener("click", () => {
+            if (weapon.quantity > 0) {
+                launchMissile(aircraftWeapons, key);
+                button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+            } else {
+                alert(`No ${weapon.name} missiles remaining!`);
+            }
+        });
+
+        buttonContainer.appendChild(button);
+    }
+
+    // Create a button for the gun system
+    const gunButton = document.createElement("button");
+    const gun = aircraftWeapons.gunSystem[Object.keys(aircraftWeapons.gunSystem)[0]];
+    gunButton.textContent = `Fire ${gun.name} (${gun.ammo} rounds left)`;
+    gunButton.style.display = "block";
+    gunButton.style.margin = "5px 0";
+    gunButton.style.width = "100%";
+    gunButton.style.cursor = "pointer";
+
+    // Add click event to fire the gun system
+    gunButton.addEventListener("click", () => {
+        if (gun.ammo > 0) {
+            gun.ammo -= 10; // Decrease ammo by 10 per click
+            console.log(`Fired ${gun.name}! Remaining ammo: ${gun.ammo}`);
+            gunButton.textContent = `Fire ${gun.name} (${gun.ammo} rounds left)`;
+        } else {
+            alert(`No ammo remaining for ${gun.name}!`);
+        }
+    });
+
+    buttonContainer.appendChild(gunButton);
+
+    // Add the button container to the document body
+    document.body.appendChild(buttonContainer);
+}
+
+// Call the function to create launch buttons for each aircraft
+createLaunchButtons(F15Weapons, "F-15 Eagle", 600);
+createLaunchButtons(F14Weapons, "F-14 Tomcat", 750);
+createLaunchButtons(SU35Weapons, "SU-35", 900);
+// Define the A-10 Thunderbolt's weapons
+const A10Weapons = {
+    missiles: {
+        AGM65_Maverick: {
+            name: "AGM-65 Maverick",
+            type: "Air-to-Surface",
+            quantity: 0, // No Mavericks by default
+            range: "Short",
+            guidance: "Laser"
+        }
+    },
+    bombs: {
+        Mk82: {
+            name: "Mk-82 General Purpose Bomb",
+            type: "Bomb",
+            quantity: 6,
+            weight: "500 pounds",
+            guidance: "Unguided"
+        },
+        CBU87: {
+            name: "CBU-87 Cluster Bomb",
+            type: "Bomb",
+            quantity: 4,
+            weight: "950 pounds",
+            guidance: "Unguided"
+        }
+    },
+    gunSystem: {
+        GAU8: {
+            name: "GAU-8 Avenger 30mm Cannon",
+            type: "Cannon",
+            ammo: 1174,
+            rateOfFire: "3900 rounds/min"
+        }
+    }
+};
+
+// Define the Alpha Jet RAF's weapons
+const AlphaJetWeapons = {
+    missiles: {
+        AIM9_Sidewinder: {
+            name: "AIM-9 Sidewinder",
+            type: "Air-to-Air",
+            quantity: 2,
+            range: "Short",
+            guidance: "Infrared"
+        },
+        AGM65_Maverick: {
+            name: "AGM-65 Maverick",
+            type: "Air-to-Surface",
+            quantity: 2,
+            range: "Short",
+            guidance: "Laser"
+        }
+    },
+    gunSystem: {
+        DEFA554: {
+            name: "DEFA 554 30mm Cannon",
+            type: "Cannon",
+            ammo: 150,
+            rateOfFire: "1800 rounds/min"
+        }
+    }
+};
+
+// Define the B-2 Spirit's weapons
+const B2Weapons = {
+    missiles: {
+        AGM158_JASSM: {
+            name: "AGM-158 JASSM",
+            type: "Air-to-Surface",
+            quantity: 4,
+            range: "Long",
+            guidance: "GPS"
+        },
+        AGM158_JASSM_ER: {
+            name: "AGM-158 JASSM-ER",
+            type: "Air-to-Surface",
+            quantity: 2,
+            range: "Extended",
+            guidance: "GPS"
+        }
+    },
+    gunSystem: {} // The B-2 Spirit does not have a gun system
+};
+
+// Function to launch a missile or drop a bomb
+function launchWeapon(aircraftWeapons, weaponKey, weaponType) {
+    const weapon = aircraftWeapons[weaponType][weaponKey];
+    if (!weapon) {
+        console.log(`Weapon type "${weaponKey}" not found.`);
+        return;
+    }
+
+    if (weapon.quantity > 0) {
+        weapon.quantity--;
+        console.log(`Launched ${weapon.name}! Remaining: ${weapon.quantity}`);
+    } else {
+        console.log(`No ${weapon.name} remaining!`);
+    }
+}
+
+// Function to fire the cannon
+function fireCannon(aircraftWeapons) {
+    const gun = aircraftWeapons.gunSystem[Object.keys(aircraftWeapons.gunSystem)[0]];
+    if (gun && gun.ammo > 0) {
+        gun.ammo -= 10; // Decrease ammo by 10 per shot
+        console.log(`Fired ${gun.name}! Remaining ammo: ${gun.ammo}`);
+    } else if (gun) {
+        console.log(`No ammo remaining for ${gun.name}!`);
+    } else {
+        console.log("This aircraft does not have a gun system.");
+    }
+}
+
+// Function to create launch buttons for any aircraft
+function createLaunchButtons(aircraftWeapons, aircraftName, topPosition) {
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.position = "absolute";
+    buttonContainer.style.top = `${topPosition}px`; // Adjusted position for each aircraft
+    buttonContainer.style.right = "10px";
+    buttonContainer.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+    buttonContainer.style.padding = "10px";
+    buttonContainer.style.borderRadius = "5px";
+    buttonContainer.style.color = "white";
+    buttonContainer.style.zIndex = "1000";
+
+    const title = document.createElement("h3");
+    title.textContent = `${aircraftName} Weapons`;
+    title.style.margin = "0 0 10px 0";
+    title.style.textAlign = "center";
+    buttonContainer.appendChild(title);
+
+    // Create buttons for each missile
+    if (aircraftWeapons.missiles) {
+        for (const [key, weapon] of Object.entries(aircraftWeapons.missiles)) {
+            const button = document.createElement("button");
+            button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+            button.style.display = "block";
+            button.style.margin = "5px 0";
+            button.style.width = "100%";
+            button.style.cursor = "pointer";
+
+            // Add click event to launch the missile
+            button.addEventListener("click", () => {
+                if (weapon.quantity > 0) {
+                    launchWeapon(aircraftWeapons, key, "missiles");
+                    button.textContent = `Fire ${weapon.name} (${weapon.quantity} left)`;
+                } else {
+                    alert(`No ${weapon.name} missiles remaining!`);
+                }
+            });
+
+            buttonContainer.appendChild(button);
+        }
+    }
+
+    // Create buttons for each bomb
+    if (aircraftWeapons.bombs) {
+        for (const [key, weapon] of Object.entries(aircraftWeapons.bombs)) {
+            const button = document.createElement("button");
+            button.textContent = `Drop ${weapon.name} (${weapon.quantity} left)`;
+            button.style.display = "block";
+            button.style.margin = "5px 0";
+            button.style.width = "100%";
+            button.style.cursor = "pointer";
+
+            // Add click event to drop the bomb
+            button.addEventListener("click", () => {
+                if (weapon.quantity > 0) {
+                    launchWeapon(aircraftWeapons, key, "bombs");
+                    button.textContent = `Drop ${weapon.name} (${weapon.quantity} left)`;
+                } else {
+                    alert(`No ${weapon.name} bombs remaining!`);
+                }
+            });
+
+            buttonContainer.appendChild(button);
+        }
+    }
+
+    // Create a button for the gun system (if it exists)
+    if (aircraftWeapons.gunSystem && Object.keys(aircraftWeapons.gunSystem).length > 0) {
+        const gunButton = document.createElement("button");
+        const gun = aircraftWeapons.gunSystem[Object.keys(aircraftWeapons.gunSystem)[0]];
+        gunButton.textContent = `Fire ${gun.name} (${gun.ammo} rounds left)`;
+        gunButton.style.display = "block";
+        gunButton.style.margin = "5px 0";
+        gunButton.style.width = "100%";
+        gunButton.style.cursor = "pointer";
+
+        // Add click event to fire the gun system
+        gunButton.addEventListener("click", () => {
+            if (gun.ammo > 0) {
+                gun.ammo -= 10; // Decrease ammo by 10 per click
+                console.log(`Fired ${gun.name}! Remaining ammo: ${gun.ammo}`);
+                gunButton.textContent = `Fire ${gun.name} (${gun.ammo} rounds left)`;
+            } else {
+                alert(`No ammo remaining for ${gun.name}!`);
+            }
+        });
+
+        buttonContainer.appendChild(gunButton);
+    }
+
+    // Add the button container to the document body
+    document.body.appendChild(buttonContainer);
+}
+
+// Call the function to create launch buttons for each aircraft
+createLaunchButtons(A10Weapons, "A-10 Thunderbolt", 1050);
+createLaunchButtons(AlphaJetWeapons, "Alpha Jet RAF", 1200);
+createLaunchButtons(B2Weapons, "B-2 Spirit", 1350);
