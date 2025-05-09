@@ -115,18 +115,18 @@
                     "Step 5: Confirm all systems are operational and ready for takeoff."
                 ]
             }
-            {
-                  name: 'Boeing F/A-18F Super Hornet', 
-                  procedure() => performStartupProcedure('Boeing F/A-18F Super Hornet'),
-                  instructions [
-                      "Step 1: Power On the aircraft.",
-                      "Step 2: Turn on avionics systems.",
-                       "Step 3: Set navigation systems to operational mode.",
-                       "Step 4: Arm weapons systems (if applicable).", 
-                       "Step 5: Perform pre-flight checks.",
-                       "Step 6: Confirm readiness for takeoff.",
-                  ]
-               }
+           {
+    name: 'Boeing F/A-18F Super Hornet',
+    procedure: () => performStartupProcedure('Boeing F/A-18F Super Hornet'),
+    instructions: [
+        "Step 1: Power On the aircraft.",
+        "Step 2: Turn on avionics systems.",
+        "Step 3: Set navigation systems to operational mode.",
+        "Step 4: Arm weapons systems (if applicable).",
+        "Step 5: Perform pre-flight checks.",
+        "Step 6: Confirm readiness for takeoff."
+    ]
+},
 // Add more aircraft here following the same structure
         ];
 
