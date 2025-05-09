@@ -55,80 +55,80 @@
         modal.appendChild(closeButton);
 
         // Add buttons for each military aircraft
-        const aircrafts = [
-           { 
-                name: 'F-16 Fighting Falcon', 
-                procedure: () => performStartupProcedure('F-16 Fighting Falcon'),
-                instructions: [
-                    "Step 1: Power On the aircraft.",
-                    "Step 2: Turn on avionics systems.",
-                    "Step 3: Set navigation systems to operational mode.",
-                    "Step 4: Arm weapons systems (if applicable).",
-                    "Step 5: Perform pre-flight checks.",
-                    "Step 6: Confirm all systems are operational and ready for takeoff."
-                ]
-            },
-            { 
-                name: 'F-22 Raptor', 
-                procedure: () => performStartupProcedure('F-22 Raptor'),
-                instructions: [
-                    "Step 1: Power On the aircraft.",
-                    "Step 2: Activate avionics and stealth systems.",
-                    "Step 3: Initialize navigation systems.",
-                    "Step 4: Arm weapons systems (if applicable).",
-                    "Step 5: Perform pre-flight diagnostics.",
-                    "Step 6: Confirm readiness for takeoff."
-                ]
-            },
-            { 
-                name: 'F-35 Lightning II', 
-                procedure: () => performStartupProcedure('F-35 Lightning II'),
-                instructions: [
-                    "Step 1: Power On the aircraft.",
-                    "Step 2: Initialize avionics and stealth systems.",
-                    "Step 3: Activate navigation and targeting systems.",
-                    "Step 4: Arm weapons systems (if applicable).",
-                    "Step 5: Perform pre-flight checks.",
-                    "Step 6: Confirm all systems are operational and ready for takeoff."
-                ]
-            },
-            { 
-                name: 'B-2 Spirit', 
-                procedure: () => performStartupProcedure('B-2 Spirit'),
-                instructions: [
-                    "Step 1: Power On the aircraft.",
-                    "Step 2: Activate avionics and stealth systems.",
-                    "Step 3: Initialize navigation and communication systems.",
-                    "Step 4: Arm defensive systems (if applicable).",
-                    "Step 5: Perform pre-flight diagnostics.",
-                    "Step 6: Confirm readiness for takeoff."
-                ]
-            },
-            { 
-                name: 'A-10 Thunderbolt II', 
-                procedure: () => performStartupProcedure('A-10 Thunderbolt II'),
-                instructions: [
-                    "Step 1: Power On the aircraft.",
-                    "Step 2: Turn on avionics and targeting systems.",
-                    "Step 3: Arm the GAU-8 Avenger cannon and other weapons systems.",
-                    "Step 4: Perform pre-flight checks.",
-                    "Step 5: Confirm all systems are operational and ready for takeoff."
-                ]
-            }
-           {
-    name: 'Boeing F/A-18F Super Hornet',
-    procedure: () => performStartupProcedure('Boeing F/A-18F Super Hornet'),
-    instructions: [
-        "Step 1: Power On the aircraft.",
-        "Step 2: Turn on avionics systems.",
-        "Step 3: Set navigation systems to operational mode.",
-        "Step 4: Arm weapons systems (if applicable).",
-        "Step 5: Perform pre-flight checks.",
-        "Step 6: Confirm readiness for takeoff."
-    ]
-},
-// Add more aircraft here following the same structure
-        ];
+       const aircrafts = [
+    { 
+        name: 'F-16 Fighting Falcon', 
+        procedure: () => performStartupProcedure('F-16 Fighting Falcon'),
+        instructions: [
+            "Step 1: Power On the aircraft.",
+            "Step 2: Turn on avionics systems.",
+            "Step 3: Set navigation systems to operational mode.",
+            "Step 4: Arm weapons systems (if applicable).",
+            "Step 5: Perform pre-flight checks.",
+            "Step 6: Confirm all systems are operational and ready for takeoff."
+        ]
+    },
+    { 
+        name: 'F-22 Raptor', 
+        procedure: () => performStartupProcedure('F-22 Raptor'),
+        instructions: [
+            "Step 1: Power On the aircraft.",
+            "Step 2: Activate avionics and stealth systems.",
+            "Step 3: Initialize navigation systems.",
+            "Step 4: Arm weapons systems (if applicable).",
+            "Step 5: Perform pre-flight diagnostics.",
+            "Step 6: Confirm readiness for takeoff."
+        ]
+    },
+    { 
+        name: 'F-35 Lightning II', 
+        procedure: () => performStartupProcedure('F-35 Lightning II'),
+        instructions: [
+            "Step 1: Power On the aircraft.",
+            "Step 2: Initialize avionics and stealth systems.",
+            "Step 3: Activate navigation and targeting systems.",
+            "Step 4: Arm weapons systems (if applicable).",
+            "Step 5: Perform pre-flight checks.",
+            "Step 6: Confirm all systems are operational and ready for takeoff."
+        ]
+    },
+    { 
+        name: 'B-2 Spirit', 
+        procedure: () => performStartupProcedure('B-2 Spirit'),
+        instructions: [
+            "Step 1: Power On the aircraft.",
+            "Step 2: Activate avionics and stealth systems.",
+            "Step 3: Initialize navigation and communication systems.",
+            "Step 4: Arm defensive systems (if applicable).",
+            "Step 5: Perform pre-flight diagnostics.",
+            "Step 6: Confirm readiness for takeoff."
+        ]
+    },
+    { 
+        name: 'A-10 Thunderbolt II', 
+        procedure: () => performStartupProcedure('A-10 Thunderbolt II'),
+        instructions: [
+            "Step 1: Power On the aircraft.",
+            "Step 2: Turn on avionics and targeting systems.",
+            "Step 3: Arm the GAU-8 Avenger cannon and other weapons systems.",
+            "Step 4: Perform pre-flight checks.",
+            "Step 5: Confirm all systems are operational and ready for takeoff."
+        ]
+    },
+    {
+        name: 'Boeing F/A-18F Super Hornet',
+        procedure: () => performStartupProcedure('Boeing F/A-18F Super Hornet'),
+        instructions: [
+            "Step 1: Power On the aircraft.",
+            "Step 2: Turn on avionics systems.",
+            "Step 3: Set navigation systems to operational mode.",
+            "Step 4: Arm weapons systems (if applicable).",
+            "Step 5: Perform pre-flight checks.",
+            "Step 6: Confirm readiness for takeoff."
+        ]
+    }
+    // Add more aircraft here following the same structure
+];
 
         aircrafts.forEach(aircraft => {
             const button = document.createElement('button');
